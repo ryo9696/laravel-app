@@ -1,48 +1,85 @@
-<!DOCTYPE html>
-<html lang="ja">
+<x-app-layout>
 
-<head>
-    <meta charset="UTF-8">
-    <title>学生登録</title>
-</head>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            学生登録
+        </h2>
+    </x-slot>
 
-<body>
+    <div class="py-6">
+        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white shadow rounded-lg p-6">
 
-<h1>学生登録</h1>
+                @if ($errors->any())
+                    <div class="mb-4">
+                        <ul class="text-red-600">
+                            @foreach ($errors->all() as $error)
+                                <li>・{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-@if ($errors->any())
-    <ul>
-        @foreach ($errors->all() as $error)
-            <li style="color:red">{{ $error }}</li>
-        @endforeach
-    </ul>
-@endif
+                <form action="{{ route('student.store') }}" method="POST">
 
-<form action="/student/store" method="POST">
+                    @csrf
 
-    @csrf
+                    <div class="mb-4">
+                        <label class="block font-semibold">
+                            名前
+                        </label>
 
-    <p>
-        名前<br>
-        <input type="text" name="name" value="{{ old('name') }}">
-    </p>
+                        <input
+                            type="text"
+                            name="name"
+                            value="{{ old('name') }}"
+                            class="border rounded w-full p-2">
+                    </div>
 
-    <p>
-        年齢<br>
-        <input type="number" name="age" value="{{ old('age') }}">
-    </p>
+                    <div class="mb-4">
+                        <label class="block font-semibold">
+                            年齢
+                        </label>
 
-    <p>
-        メール<br>
-        <input type="email" name="email" value="{{ old('email') }}">
-    </p>
+                        <input
+                            type="number"
+                            name="age"
+                            value="{{ old('age') }}"
+                            class="border rounded w-full p-2">
+                    </div>
 
-    <button type="submit">
-        登録
-    </button>
+                    <div class="mb-4">
+                        <label class="block font-semibold">
+                            メールアドレス
+                        </label>
 
-</form>
+                        <input
+                            type="email"
+                            name="email"
+                            value="{{ old('email') }}"
+                            class="border rounded w-full p-2">
+                    </div>
 
-</body>
+                    <div class="flex gap-3">
 
-</html>
+                        <button
+                            type="submit"
+                            class="bg-blue-600 text-white px-4 py-2 rounded">
+                            登録
+                        </button>
+
+                        <a
+                            href="{{ route('student.list') }}"
+                            class="bg-gray-500 text-white px-4 py-2 rounded">
+                            戻る
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</x-app-layout>

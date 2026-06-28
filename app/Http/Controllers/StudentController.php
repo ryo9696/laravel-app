@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\StudentRegistered;
 
 class StudentController extends Controller
 {
@@ -27,9 +29,17 @@ class StudentController extends Controller
             'email' => 'required|email|unique:students,email',
         ]);
 
-        Student::create($validated);
+        $student = Student::create([
+            'name'  => $request->name,
+            'age'   => $request->age,
+            'email' => $request->email,
+        ]);
 
-        return redirect('/student/list');
+        Mail::to($student->email)
+            ->send(new StudentRegistered($student));
+
+        return redirect('/student/list')
+            ->with('success', '学生を登録しました。メールを送信しました。');
     }
 
     public function edit($id)

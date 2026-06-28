@@ -1,61 +1,86 @@
-<!DOCTYPE html>
-<html lang="ja">
+<x-app-layout>
 
-<head>
-    <meta charset="UTF-8">
-    <title>学生編集</title>
-</head>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            学生編集
+        </h2>
+    </x-slot>
 
-<body>
+    <div class="py-6">
+        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white shadow rounded-lg p-6">
 
-<h1>学生編集</h1>
+                @if ($errors->any())
+                    <div class="mb-4">
+                        <ul class="text-red-600">
+                            @foreach ($errors->all() as $error)
+                                <li>・{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-@if ($errors->any())
-<ul>
-    @foreach ($errors->all() as $error)
-        <li style="color:red">{{ $error }}</li>
-    @endforeach
-</ul>
-@endif
+                <form action="{{ route('student.update', $student->id) }}" method="POST">
 
-<form action="/student/{{ $student->id }}" method="POST">
+                    @csrf
+                    @method('PUT')
 
-    @csrf
+                    <div class="mb-4">
+                        <label class="block font-semibold">
+                            名前
+                        </label>
 
-    @method('PUT')
+                        <input
+                            type="text"
+                            name="name"
+                            value="{{ old('name', $student->name) }}"
+                            class="border rounded w-full p-2">
+                    </div>
 
-    <p>
-        名前<br>
-        <input
-            type="text"
-            name="name"
-            value="{{ old('name', $student->name) }}">
-    </p>
+                    <div class="mb-4">
+                        <label class="block font-semibold">
+                            年齢
+                        </label>
 
-    <p>
-        年齢<br>
-        <input
-            type="number"
-            name="age"
-            value="{{ old('age', $student->age) }}">
-    </p>
+                        <input
+                            type="number"
+                            name="age"
+                            value="{{ old('age', $student->age) }}"
+                            class="border rounded w-full p-2">
+                    </div>
 
-    <p>
-        メール<br>
-        <input
-            type="email"
-            name="email"
-            value="{{ old('email', $student->email) }}">
-    </p>
+                    <div class="mb-4">
+                        <label class="block font-semibold">
+                            メールアドレス
+                        </label>
 
-    <button type="submit">
+                        <input
+                            type="email"
+                            name="email"
+                            value="{{ old('email', $student->email) }}"
+                            class="border rounded w-full p-2">
+                    </div>
 
-        更新
+                    <div class="flex gap-3">
 
-    </button>
+                        <button
+                            type="submit"
+                            class="bg-blue-600 text-white px-4 py-2 rounded">
+                            更新
+                        </button>
 
-</form>
+                        <a
+                            href="{{ route('student.list') }}"
+                            class="bg-gray-500 text-white px-4 py-2 rounded">
+                            戻る
+                        </a>
 
-</body>
+                    </div>
 
-</html>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</x-app-layout>
